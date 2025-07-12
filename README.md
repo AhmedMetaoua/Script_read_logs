@@ -1,95 +1,160 @@
-# 📊 Script d'Extraction et d'Insertion des Données de Relevé
+# Script de Suivi BTJ
 
-Ce script lit un fichier texte contenant des statistiques de relevés (format `.txt`), extrait automatiquement les données clés, et les insère à la fois dans un fichier Excel (`Suivi Btj 2025.xlsx`) et dans une base de données MySQL.
+## Description
 
----
+Ce script Python automatise l'extraction et le suivi des données de traitement BTJ (Batch de Traitement des Journaux). Il analyse les fichiers de relevé texte, extrait les informations importantes et les sauvegarde dans un fichier Excel ainsi que dans une base de données MySQL.
 
-## ⚙️ Fonctionnalités
+## Fonctionnalités
 
-- 📅 Extraction automatique de la **date de traitement** et de l'**heure d'exécution**
-- 🔍 Recherche via expressions régulières des données statistiques importantes (compteurs, abonnés, factures…)
-- 📥 Ajout ou création automatique d’un fichier **Excel**
-- 🛢️ Insertion des données dans une **base de données MySQL** (`scheduler_test`)
-- ✅ Création de la table `Suivi_Btj` si elle n’existe pas
+- **Extraction automatique** des données depuis les fichiers de relevé texte
+- **Sauvegarde Excel** dans un fichier de suivi annuel
+- **Stockage en base de données** MySQL avec création automatique des tables
+- **Validation des données** avec gestion d'erreurs
+- **Interface en ligne de commande** simple d'utilisation
 
----
+## Données extraites
 
-## 📦 Prérequis
+Le script extrait les informations suivantes :
+- Date de traitement
+- Heure d'exécution
+- Compteurs relevés
+- Compteurs non relevés
+- Compteurs NI = AI
+- Abonnés facturés
+- Abonnés non facturés
+- Factures ordinaires
+- Factures simples
+- Factures ADM
+- Somme des restitutions + ADM
 
-- Python 3.x
-- Bibliothèques :
-  - `openpyxl`
-  - `pymysql`
-- Une base de données MySQL locale accessible avec :
-  - **host**: `localhost`
-  - **user**: `root`
-  - **password**: `azerty`
-  - **database**: `scheduler_test`
+## Prérequis
 
----
-
-## 📁 Structure attendue du fichier texte
-
-Le fichier `.txt` doit contenir des lignes semblables à :
-
-Production on Monday March 24 12:45:30 2025
-
-
-Cptrs a Releves - - - - - - - 1834
-
-...
-
-to_date('24/03/2025')
-
-...
-
-Les lignes contenant les informations suivantes seront analysées :
-
-- Cptrs a Releves
-- Cptrs Non Releves
-- Cptrs NI egale AI
-- Abonnes Factures
-- Abon. Non Factures
-- Nbre Factures Fichier Ordinaire
-- Nbre Factures Fichier Simple
-- Factures ADM de la mensuel de prelevement
-- Somme Restitutions et Adm
-
----
-
-## 🚀 Exécution
-
-Dans un terminal :
-
+### Dépendances Python
 ```bash
-python script.py chemin/vers/fichier_releve.txt
+pip install openpyxl pymysql
 ```
 
-⚠️ Le fichier texte doit être fourni en argument.
+### Base de données MySQL
+- Serveur MySQL accessible
+- Base de données nommée `scheduler_test`
+- Utilisateur avec droits de création/insertion
 
-## 🗃️ Données insérées
+## Configuration
 
-Chaque ligne correspond à une exécution, avec les colonnes suivantes :
+### Configuration de la base de données
+Modifiez les paramètres dans le script selon votre environnement :
 
-- Date
-- Heure
-- Cptrs Releves
-- Cptrs Non Releves
-- Cptrs NI = AI
-- Abonnes Factures
-- Abonnes Non Factures
-- Factures Ordinaire
-- Factures Simple
-- Factures ADM
-- Somme Restitutions + ADM
+```python
+DB_CONFIG = {
+    "host": "localhost",
+    "user": "root",
+    "password": "azerty",
+    "database": "scheduler_test"
+}
+```
 
-## 🛠️ À adapter
+### Fichier Excel
+Le script utilise par défaut le fichier `Suivi Btj 2025.xlsx`. Il sera créé automatiquement s'il n'existe pas.
 
-Modifier les identifiants de connexion `MySQL` dans `DB_CONFIG` si nécessaire.
+## Utilisation
 
-Vérifier que le fichier `.txt` respecte bien la structure attendue (sinon certaines valeurs pourraient être manquantes).
+### Syntaxe
+```bash
+python script.py <chemin/vers/fichier_releve.txt>
+```
 
-## 📤 Sorties
-Un fichier Excel : `Suivi Btj 2025.xlsx` (créé ou mis à jour)
+### Exemple
+```bash
+python script.py releve_20250712.txt
+```
 
-Une ligne insérée dans la base de données `scheduler_test` dans la table `Suivi_Btj`
+### Format du fichier d'entrée
+Le fichier texte doit contenir :
+- Une ligne avec la date au format `to_date('DD/MM/YYYY')`
+- Une ligne avec l'heure au format `Production on ... HH:MM:SS`
+- Les données de compteurs et factures avec leurs libellés respectifs
+
+## Structure de la base de données
+
+### Table `Suivi_Btj`
+| Colonne | Type | Description |
+|---------|------|-------------|
+| `id` | INT (AUTO_INCREMENT) | Clé primaire |
+| `date_traitement` | DATE | Date de traitement |
+| `heure_execution` | TIME | Heure d'exécution |
+| `cptrs_releves` | INT | Compteurs relevés |
+| `cptrs_non_releves` | INT | Compteurs non relevés |
+| `cptrs_ni_ai` | INT | Compteurs NI = AI |
+| `abonnes_factures` | INT | Abonnés facturés |
+| `abonnes_non_factures` | INT | Abonnés non facturés |
+| `factures_ordinaire` | INT | Factures ordinaires |
+| `factures_simple` | INT | Factures simples |
+| `factures_adm` | INT | Factures ADM |
+| `somme_restitutions_adm` | INT | Somme restitutions + ADM |
+
+## Gestion des erreurs
+
+Le script gère les erreurs suivantes :
+- Fichier de relevé introuvable
+- Erreurs de connexion à la base de données
+- Données manquantes ou mal formatées
+
+## Messages de sortie
+
+- ✅ **Succès** : Données extraites et sauvegardées
+- ❌ **Erreur** : Fichier introuvable ou erreur de base de données
+
+## Exemples d'utilisation
+
+### Traitement d'un fichier quotidien
+```bash
+python script.py releve_quotidien_20250712.txt
+```
+
+### Traitement en lot (script bash)
+```bash
+#!/bin/bash
+for fichier in releve_*.txt; do
+    python script.py "$fichier"
+done
+```
+
+## Maintenance
+
+### Sauvegarde des données
+- Les données Excel sont sauvegardées dans le fichier `Suivi Btj 2025.xlsx`
+- Les données MySQL sont stockées dans la table `Suivi_Btj`
+
+### Archivage annuel
+Il est recommandé de :
+- Créer un nouveau fichier Excel chaque année
+- Archiver les anciennes données
+- Effectuer des sauvegardes régulières de la base de données
+
+## Dépannage
+
+### Problèmes courants
+
+**Erreur de connexion MySQL**
+- Vérifiez que le serveur MySQL est démarré
+- Contrôlez les paramètres de connexion
+- Vérifiez les droits d'accès de l'utilisateur
+
+**Fichier Excel verrouillé**
+- Fermez le fichier Excel s'il est ouvert
+- Vérifiez les permissions d'écriture
+
+**Données manquantes**
+- Vérifiez le format du fichier de relevé
+- Contrôlez que tous les libellés attendus sont présents
+
+## Licence
+
+Ce script est fourni tel quel pour usage interne. Adaptez les paramètres selon vos besoins spécifiques.
+
+## Support
+
+Pour toute question ou problème, contactez l'équipe de développement avec :
+- Le message d'erreur complet
+- Un exemple de fichier de relevé
+- La configuration de votre environnement
