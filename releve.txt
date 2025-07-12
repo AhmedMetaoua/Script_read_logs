@@ -1,0 +1,96 @@
+SQL*Plus: Release 19.0.0.0.0 - Production on Fri Jun 20 00:36:21 2025
+Version 19.5.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+Heure de la derniere connexion reussie : Ven. Juin  20 2025 00:36:23 +01:00
+
+Connecte a :
+Oracle Database 18c Enterprise Edition Release 18.0.0.0.0 - Production
+Version 18.10.0.0.0
+
+ancien   3 : where BT_PQ_DAT_TRAIT like to_date('&1','dd/mm/yyyy')
+nouveau   3 : where BT_PQ_DAT_TRAIT like to_date('18/06/2025','dd/mm/yyyy')
+
+Cptrs a Releves
+-----------------
+            44067
+
+ancien   3 : where BT_PQ_DAT_TRAIT like to_date('&1','dd/mm/yyyy') and RC_BT_ERR_CODE = '10'
+nouveau   3 : where BT_PQ_DAT_TRAIT like to_date('18/06/2025','dd/mm/yyyy') and RC_BT_ERR_CODE = '10'
+
+Cptrs Non Releves
+-----------------
+             7042
+
+ancien   3 : where BT_PQ_DAT_TRAIT like to_date('&1','dd/mm/yyyy')
+nouveau   3 : where BT_PQ_DAT_TRAIT like to_date('18/06/2025','dd/mm/yyyy')
+
+Cptrs NI egale AI
+-----------------
+            10559
+
+Deconnecte de Oracle Database 18c Enterprise Edition Release 18.0.0.0.0 - Production
+Version 18.10.0.0.0
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Fri Jun 20 00:37:31 2025
+Version 19.5.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+Heure de la derniere connexion reussie : Ven. Juin  20 2025 00:37:11 +01:00
+
+Connecte a :
+Oracle Database 18c Enterprise Edition Release 18.0.0.0.0 - Production
+Version 18.10.0.0.0
+
+ancien   7 : and plg.bt_plgref_trait_date=to_date('&1','DD/MM/YYYY')
+nouveau   7 : and plg.bt_plgref_trait_date=to_date('18/06/2025','DD/MM/YYYY')
+
+Abonnes Factures
+-----------------
+            56777
+
+ancien   7 : and plg.bt_plgref_trait_date=to_date('&1','DD/MM/YYYY')
+nouveau   7 : and plg.bt_plgref_trait_date=to_date('18/06/2025','DD/MM/YYYY')
+
+Abon.Non Factures
+-----------------
+               17
+
+Deconnecte de Oracle Database 18c Enterprise Edition Release 18.0.0.0.0 - Production
+Version 18.10.0.0.0
+
+Nbre Factures Fichier Ordinaire
+-------------------------------
+55323
+
+
+Nbre Factures Fichier Simple
+-------------------------------
+870
+
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Fri Jun 20 00:37:39 2025
+Version 19.5.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+Heure de la derniere connexion reussie : Ven. Juin  20 2025 00:37:37 +01:00
+
+Connecte a :
+Oracle Database 18c Enterprise Edition Release 18.0.0.0.0 - Production
+Version 18.10.0.0.0
+
+ancien   8 : and plg.bt_plgref_trait_date=to_date('&1','DD/MM/YYYY')
+nouveau   8 : and plg.bt_plgref_trait_date=to_date('18/06/2025','DD/MM/YYYY')
+
+Factures ADM de la mensuel de prelevement
+-----------------------------------------
+                                      544
+
+Deconnecte de Oracle Database 18c Enterprise Edition Release 18.0.0.0.0 - Production
+Version 18.10.0.0.0
+Somme Restitutions et Adm
+--------------------------
+56737
